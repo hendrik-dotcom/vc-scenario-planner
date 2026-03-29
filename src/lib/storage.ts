@@ -1,5 +1,5 @@
 import { Company } from "@/types/company";
-import { SEED_COMPANIES } from "./seed-data";
+import { createSeedCompanies } from "./seed-data";
 
 const STORAGE_KEY = "vc-portfolio";
 const SEEDED_KEY = "vc-portfolio-seeded";
@@ -8,12 +8,17 @@ export function getCompanies(): Company[] {
   if (typeof window === "undefined") return [];
 
   // Seed on first visit
-  if (!localStorage.getItem(SEEDED_KEY)) {
-    const existing = localStorage.getItem(STORAGE_KEY);
-    if (!existing || JSON.parse(existing).length === 0) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(SEED_COMPANIES));
+  try {
+    if (!localStorage.getItem(SEEDED_KEY)) {
+      const existing = localStorage.getItem(STORAGE_KEY);
+      if (!existing || JSON.parse(existing).length === 0) {
+        const seedCompanies = createSeedCompanies();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(seedCompanies));
+      }
+      localStorage.setItem(SEEDED_KEY, "true");
     }
-    localStorage.setItem(SEEDED_KEY, "true");
+  } catch (e) {
+    console.error("Seeding error:", e);
   }
 
   const data = localStorage.getItem(STORAGE_KEY);
