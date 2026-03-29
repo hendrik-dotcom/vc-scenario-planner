@@ -5,11 +5,19 @@ export interface ScenarioAssumptions {
   exitMultipleFactor: number; // multiplier on current revenue multiple (0.8 = 20% compression)
 }
 
+export interface ScenarioReasoning {
+  narrative: string;
+  keyDrivers: string[];
+  exitMultipleRationale: string;
+}
+
 export interface ResearchResult {
-  marketSize: string;
-  growthTrajectory: string;
-  competitiveLandscape: string;
-  comparableMultiples: string;
+  recentDevelopments: string;
+  marketDynamics: string;
+  competitorAnalysis: string;
+  industryMultiples: string;
+  investmentThesis: string;
+  scenarioReasoning: Record<ScenarioType, ScenarioReasoning>;
   summary: string;
   refinedAt: string;
 }

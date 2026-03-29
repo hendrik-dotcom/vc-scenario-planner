@@ -68,10 +68,8 @@ export function ResearchButton({ company, onUpdated }: Props) {
           </svg>
           Researching...
         </span>
-      ) : company.researchStatus === "done" ? (
-        "Re-run Research"
       ) : (
-        "Run AI Research"
+        "Update Research"
       )}
     </button>
   );
