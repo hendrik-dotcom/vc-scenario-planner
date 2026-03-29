@@ -7,6 +7,7 @@ import { Company } from "@/types/company";
 import { getCompany } from "@/lib/storage";
 import { CompanyHeader } from "@/components/company-header";
 import { ScenarioChart } from "@/components/scenario-chart";
+import { ResearchSummary } from "@/components/research-summary";
 
 export default function CompanyDetailPage() {
   const params = useParams();
@@ -60,6 +61,13 @@ export default function CompanyDetailPage() {
           10-Year Projections
         </h2>
         <ScenarioChart company={company} />
+      </div>
+
+      <div className="border border-[var(--border)] rounded-lg p-6 bg-[var(--card)]">
+        <h2 className="text-lg font-semibold text-[var(--foreground)] mb-4">
+          Research & Analysis
+        </h2>
+        <ResearchSummary company={company} />
       </div>
     </div>
   );
