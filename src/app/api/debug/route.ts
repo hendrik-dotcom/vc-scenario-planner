@@ -3,21 +3,43 @@ import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const hasKey = !!process.env.ANTHROPIC_API_KEY;
-  const keyPrefix = process.env.ANTHROPIC_API_KEY
-    ? process.env.ANTHROPIC_API_KEY.substring(0, 7) + "..."
-    : "NOT SET";
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const hasKey = !!apiKey;
+  const keyPrefix = apiKey ? apiKey.substring(0, 10) + "..." : "NOT SET";
 
-  // Check for common typos / variations
-  const envKeysWithAnth = Object.keys(process.env).filter(
-    (k) => k.toLowerCase().includes("anth") || k.toLowerCase().includes("api_key")
-  );
+  // If key exists, test a minimal API call
+  let apiTest = "skipped - no key";
+  if (apiKey) {
+    try {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": apiKey,
+          "anthropic-version": "2023-06-01",
+        },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 10,
+          messages: [{ role: "user", content: "Say hi" }],
+        }),
+      });
+
+      if (response.ok) {
+        apiTest = "SUCCESS";
+      } else {
+        const errorBody = await response.text();
+        apiTest = `FAILED ${response.status}: ${errorBody}`;
+      }
+    } catch (err) {
+      apiTest = `ERROR: ${err instanceof Error ? err.message : String(err)}`;
+    }
+  }
 
   return NextResponse.json({
     hasKey,
     keyPrefix,
+    apiTest,
     nodeEnv: process.env.NODE_ENV,
-    matchingEnvKeys: envKeysWithAnth,
-    totalEnvKeys: Object.keys(process.env).length,
   });
 }
