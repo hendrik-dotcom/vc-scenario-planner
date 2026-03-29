@@ -32,6 +32,15 @@ export function projectScenario(
   valuation: number,
   assumptions: ScenarioAssumptions
 ): ProjectionPoint[] {
+  // Handle pre-revenue companies
+  if (revenue <= 0) {
+    return Array.from({ length: 11 }, (_, i) => ({
+      year: i,
+      revenue: 0,
+      valuation: valuation,
+    }));
+  }
+
   const currentMultiple = valuation / revenue;
   const targetMultiple = currentMultiple * assumptions.exitMultipleFactor;
   const results: ProjectionPoint[] = [{ year: 0, revenue, valuation }];

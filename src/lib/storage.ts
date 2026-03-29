@@ -1,9 +1,21 @@
 import { Company } from "@/types/company";
+import { SEED_COMPANIES } from "./seed-data";
 
 const STORAGE_KEY = "vc-portfolio";
+const SEEDED_KEY = "vc-portfolio-seeded";
 
 export function getCompanies(): Company[] {
   if (typeof window === "undefined") return [];
+
+  // Seed on first visit
+  if (!localStorage.getItem(SEEDED_KEY)) {
+    const existing = localStorage.getItem(STORAGE_KEY);
+    if (!existing || JSON.parse(existing).length === 0) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(SEED_COMPANIES));
+    }
+    localStorage.setItem(SEEDED_KEY, "true");
+  }
+
   const data = localStorage.getItem(STORAGE_KEY);
   if (!data) return [];
   const companies: Company[] = JSON.parse(data);

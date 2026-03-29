@@ -60,7 +60,9 @@ export function WatchlistTable({ companies, onRefresh }: Props) {
                   {formatCurrency(company.latestValuation)}
                 </td>
                 <td className="text-right py-3 px-4 text-[var(--foreground)]">
-                  {formatMultiple(company.latestValuation / company.latestAnnualRevenue)}
+                  {company.latestAnnualRevenue > 0
+                    ? formatMultiple(company.latestValuation / company.latestAnnualRevenue)
+                    : "Pre-rev"}
                 </td>
                 <td className="text-right py-3 px-4 text-[var(--muted-foreground)] text-xs">
                   {company.researchStatus === "done" && company.researchResult?.refinedAt

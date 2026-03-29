@@ -126,7 +126,7 @@ export function CompanyHeader({ company, onUpdated }: Props) {
         <div className="p-4 rounded-lg bg-[var(--muted)]">
           <p className="text-xs text-[var(--muted-foreground)] mb-1">Revenue Multiple</p>
           <p className="text-lg font-semibold text-[var(--foreground)]">
-            {formatMultiple(currentMultiple)}
+            {company.latestAnnualRevenue > 0 ? formatMultiple(currentMultiple) : "Pre-revenue"}
           </p>
         </div>
       </div>
