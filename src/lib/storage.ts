@@ -5,7 +5,9 @@ const STORAGE_KEY = "vc-portfolio";
 export function getCompanies(): Company[] {
   if (typeof window === "undefined") return [];
   const data = localStorage.getItem(STORAGE_KEY);
-  return data ? JSON.parse(data) : [];
+  if (!data) return [];
+  const companies: Company[] = JSON.parse(data);
+  return companies.map((c) => ({ ...c, type: c.type ?? "portfolio" }));
 }
 
 export function getCompany(id: string): Company | null {

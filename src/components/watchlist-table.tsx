@@ -10,12 +10,11 @@ interface Props {
   onRefresh: () => void;
 }
 
-export function PortfolioTable({ companies, onRefresh }: Props) {
+export function WatchlistTable({ companies, onRefresh }: Props) {
   if (companies.length === 0) {
     return (
-      <div className="text-center py-16 text-[var(--muted-foreground)]">
-        <p className="text-lg mb-2">No portfolio companies yet</p>
-        <p className="text-sm">Add your first company to get started with scenario planning.</p>
+      <div className="text-center py-12 text-[var(--muted-foreground)]">
+        <p className="text-sm">No watchlist companies yet. Add companies you&apos;re tracking.</p>
       </div>
     );
   }
@@ -23,7 +22,7 @@ export function PortfolioTable({ companies, onRefresh }: Props) {
   function handleDelete(e: React.MouseEvent, id: string) {
     e.preventDefault();
     e.stopPropagation();
-    if (confirm("Remove this company from your portfolio?")) {
+    if (confirm("Remove this company from your watchlist?")) {
       deleteCompany(id);
       onRefresh();
     }
@@ -37,7 +36,6 @@ export function PortfolioTable({ companies, onRefresh }: Props) {
             <th className="text-left py-3 px-4 font-medium text-[var(--muted-foreground)]">Company</th>
             <th className="text-right py-3 px-4 font-medium text-[var(--muted-foreground)]">Revenue</th>
             <th className="text-right py-3 px-4 font-medium text-[var(--muted-foreground)]">Valuation</th>
-            <th className="text-right py-3 px-4 font-medium text-[var(--muted-foreground)]">Invested</th>
             <th className="text-right py-3 px-4 font-medium text-[var(--muted-foreground)]">Multiple</th>
             <th className="text-right py-3 px-4 font-medium text-[var(--muted-foreground)]">Last Researched</th>
             <th className="text-right py-3 px-4 font-medium text-[var(--muted-foreground)]"></th>
@@ -45,11 +43,7 @@ export function PortfolioTable({ companies, onRefresh }: Props) {
         </thead>
         <tbody>
           {companies.map((company) => (
-            <Link
-              key={company.id}
-              href={`/company/${company.id}`}
-              className="contents"
-            >
+            <Link key={company.id} href={`/company/${company.id}`} className="contents">
               <tr className="border-b border-[var(--border)] hover:bg-[var(--accent)] cursor-pointer transition-colors">
                 <td className="py-3 px-4">
                   <div className="font-medium text-[var(--foreground)]">{company.name}</div>
@@ -64,9 +58,6 @@ export function PortfolioTable({ companies, onRefresh }: Props) {
                 </td>
                 <td className="text-right py-3 px-4 text-[var(--foreground)]">
                   {formatCurrency(company.latestValuation)}
-                </td>
-                <td className="text-right py-3 px-4 text-[var(--foreground)]">
-                  {company.amountInvested ? formatCurrency(company.amountInvested) : "—"}
                 </td>
                 <td className="text-right py-3 px-4 text-[var(--foreground)]">
                   {formatMultiple(company.latestValuation / company.latestAnnualRevenue)}

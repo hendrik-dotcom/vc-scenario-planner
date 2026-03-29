@@ -1,4 +1,5 @@
 export type ScenarioType = "bear" | "base" | "bull";
+export type CompanyType = "portfolio" | "watchlist";
 
 export interface ScenarioAssumptions {
   growthRates: number[]; // 10 values, one per year (0.30 = 30%)
@@ -26,6 +27,8 @@ export interface Company {
   id: string;
   name: string;
   url: string;
+  type: CompanyType;
+  amountInvested?: number;
   latestAnnualRevenue: number;
   latestValuation: number;
   scenarios: Record<ScenarioType, ScenarioAssumptions>;
